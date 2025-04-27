@@ -51,6 +51,6 @@ jobs:
         run: ls -ltr
 
 
-      # - name: Run helm template
-      #   run: |
-      #     cd script && ./create_helm_template.sh bird "harshalk91/bird" develop
+      - name: Run helm template
+        run: |
+          cd script && ./create_helm_template.sh bird "harshalk91/bird" develop
