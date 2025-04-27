@@ -14,8 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup QEMU
-        uses: docker/setup-qemu-action@v3
+      # - name: Setup QEMU
+      #   uses: docker/setup-qemu-action@v3
 
       # - name: Setup Buildx
       #   uses: docker/setup-buildx-action@v3
@@ -48,8 +48,9 @@ jobs:
           token: ${{ secrets.GH_PAT }}
       
       - name: check current directory
-        run: ls -ltr ../
+        run: ls -ltr ../ && echo $HOME
 
-      - name: Run helm template
-        run: |
-          cd ../script && ./create_helm_template.sh bird "harshalk91/bird" develop
+      # - name: Run helm template
+      #   run: |
+      #     cd $HOME
+      #     cd ../bird/script && ./create_helm_template.sh bird "harshalk91/bird" develop
