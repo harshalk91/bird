@@ -64,8 +64,14 @@ func bird(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, buffer.String())
 }
 
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintln(w, "OK")
+}
+
 func main() {
 	http.HandleFunc("/", bird)
+	http.HandleFunc("/health", healthHandler)
 	http.ListenAndServe(":4200", nil)
 }
 
