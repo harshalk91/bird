@@ -1,0 +1,104 @@
+# Name of the application.
+applicationName: "bird"
+namespace: 
+  name: "bird"
+   
+# These labels will be added on all resources, and you can add additional labels from below on individual resource
+labels:
+  group: bird
+deployment:
+  namespace:
+    name: "bird"
+  # By default deploymentStrategy is set to rollingUpdate
+  # You can change type to `Recreate` or can uncomment `rollingUpdate` specification and adjust them to your usage.
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  
+
+  # Replicas to be created
+  replicas: 2
+
+  # # Secrets used to pull image
+  # imagePullSecrets: "docker"
+
+  # If want to mount Envs from configmap or secret
+  envFrom: []
+  # - type: configmap
+  #   name: my-configmap
+  # - type: secret
+  #   name: my-secret
+
+  # Environment variables to be passed to the app container
+  env:
+  - name: BACKEND_URL
+    value: "http://birdimage.birdimage.svc.cluster.local:4200"
+  - name: LISTEN_PORT
+    value: ":4201"
+  
+  # Image of the app container
+  image: 
+    repository: harshalk91/bird
+    pullPolicy: IfNotPresent
+
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    capabilities:
+      drop:
+        - all
+
+
+  # Resources to be defined for pod
+  resources:
+    limits:
+      memory: 512Mi
+      cpu: 0.4
+    requests:
+      memory: 128Mi
+      cpu: 0.2
+
+  # Security Context for the pod
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1001
+    runAsGroup: 3000
+    fsGroup: 2000
+
+# Service object for servicing pods
+service:
+  namespace:
+    name: "bird"
+  additionalLabels:
+    # expose: "true"
+
+  annotations:
+  applicationPort: 8000
+  ports:
+    - port: 8000
+      name: http
+      protocol: TCP
+      targetPort: 4201
+
+
+    # Readiness and Liveness probes
+  readinessProbe:
+    failureThreshold: 3
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 1
+    initialDelaySeconds: 10
+    httpGet:
+      path: /health
+      port: 4201
+  livenessProbe:
+    failureThreshold: 3
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 1
+    initialDelaySeconds: 30
+    httpGet:
+      path: /health
+      port: 4201

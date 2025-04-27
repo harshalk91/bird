@@ -1,0 +1,19 @@
+services:
+  bird:
+    build:
+      context: ./bird
+    image: bird
+    container_name: bird
+    ports:
+      - "8000:4201"
+    environment:
+      - BACKEND_URL=http://birdimage:4200
+      - LISTEN_PORT=:4201
+
+  birdimage:
+    build:
+      context: ./birdImage
+    image: birdimage
+    container_name: birdimage
+    ports:
+      - "4200:4200"

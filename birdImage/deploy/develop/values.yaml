@@ -1,0 +1,98 @@
+# Name of the application.
+applicationName: "birdimage"
+namespace: 
+  name: "birdimage"
+   
+# These labels will be added on all resources, and you can add additional labels from below on individual resource
+labels:
+  group: birdimage
+deployment:
+  namespace:
+    name: "birdimage"
+  # By default deploymentStrategy is set to rollingUpdate
+  # You can change type to `Recreate` or can uncomment `rollingUpdate` specification and adjust them to your usage.
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  
+
+  # Replicas to be created
+  replicas: 1
+
+  # # Secrets used to pull image
+  # imagePullSecrets: "docker"
+
+  # If want to mount Envs from configmap or secret
+  envFrom: []
+  # - type: configmap
+  #   name: my-configmap
+  # - type: secret
+  #   name: my-secret
+  
+  # Image of the app container
+  image: 
+    repository: harshalk91/birdimage
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    capabilities:
+      drop:
+        - all
+
+
+  # Resources to be defined for pod
+  resources:
+    limits:
+      memory: 512Mi
+      cpu: 0.4
+    requests:
+      memory: 128Mi
+      cpu: 0.2
+
+  # Security Context for the pod
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1001
+    runAsGroup: 3000
+    fsGroup: 2000
+
+# Service object for servicing pods
+service:
+  namespace:
+    name: "birdimage"
+  additionalLabels:
+    # expose: "true"
+
+  annotations:
+  applicationPort: 4200
+  ports:
+    - port: 4200
+      name: http
+      protocol: TCP
+      targetPort: 4200
+
+
+    # Readiness and Liveness probes
+  readinessProbe:
+    failureThreshold: 3
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 1
+    initialDelaySeconds: 10
+    httpGet:
+      path: /health
+      port: 4200
+  livenessProbe:
+    failureThreshold: 3
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 1
+    initialDelaySeconds: 30
+    httpGet:
+      path: /health
+      port: 4200
