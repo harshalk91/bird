@@ -40,6 +40,16 @@ jobs:
           version: 4.3.0
           id: install
       
+      - name: Checkout private repository
+        uses: actions/checkout@v4
+        with:
+          repository: harshalk91/application-helm
+          token: ${{ secrets.GH_PAT }}
+      
+      - name: check current directory
+        run: pwd
+        
+
       # - name: Run helm template
       #   run: |
       #     cd script && ./create_helm_template.sh bird "harshalk91/bird" develop
