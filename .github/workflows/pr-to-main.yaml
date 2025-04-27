@@ -35,10 +35,10 @@ jobs:
         run: |
           cd script && ./build_docker_image.sh bird "harshalk91/bird" develop
       
-      - uses: azure/setup-helm@v4.3.0
-        with:
-          version: 4.3.0
-          id: install
+      # - uses: azure/setup-helm@v4.3.0
+      #   with:
+      #     version: 4.3.0
+      #     id: install
       
       - name: Checkout private repository
         uses: actions/checkout@v4
@@ -48,7 +48,7 @@ jobs:
       
       - name: check current directory
         run: pwd
-        
+
 
       # - name: Run helm template
       #   run: |
