@@ -1,7 +1,7 @@
 name: develop-deploy
 run-name: "Develop Deploy"
 on:
-  pull_requuest:
+  pull_request:
     branches:
       - 'main'
     path:
