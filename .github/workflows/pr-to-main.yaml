@@ -33,12 +33,13 @@ jobs:
 
       - name: Build docker image
         run: |
-          cd script && ./build_docker_image.sh bird "harshalk91/bird" develop
+          cd script && ./build_docker_image.sh bird "harshalk91/bird" develop && cd ..
       
-      # - uses: azure/setup-helm@v4.3.0
-      #   with:
-      #     version: 4.3.0
-      #     id: install
+      - uses: Install helm cli
+        run: |
+          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+          chmod 700 get_helm.sh
+          sudo ./get_helm.sh
       
       - name: Checkout private repository
         uses: actions/checkout@v4

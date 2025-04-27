@@ -5,7 +5,7 @@ create_helm_template() {
     local IMAGE_SHA="sha-$(git rev-parse --short HEAD)"
 
     echo "📁 Moving to Helm chart directory"
-    cd "../application-helm-backup/stable/application-helm"
+    cd "../application-helm/stable"
 
     echo "🛠️ Generating Helm template for ${APP_NAME} in ${ENVIRONMENT} environment"
     helm template \
@@ -15,6 +15,7 @@ create_helm_template() {
         -n "${APP_NAME}" "${APP_NAME}" ./ > "../../../${APP_NAME}/deploy/${ENVIRONMENT}/${APP_NAME}_deployment.yaml"
 
     echo "✅ Helm template generated at ../../../${APP_NAME}/deploy/${ENVIRONMENT}/${APP_NAME}_deployment.yaml"
+    cat ../../../${APP_NAME}/deploy/${ENVIRONMENT}/${APP_NAME}_deployment.yaml
     cd ../../../script
 }
 
