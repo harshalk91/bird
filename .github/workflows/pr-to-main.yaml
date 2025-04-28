@@ -48,7 +48,7 @@ jobs:
           token: ${{ secrets.GH_PAT }}
       
       - name: check current directory
-        run: ls -ltr ../ && echo ls -ltr $HOME/*
+        run: ls -ltr ../ && echo ls -ltr $HOME/* && ls -ltr /home/runner/work/
 
       # - name: Run helm template
       #   run: |
