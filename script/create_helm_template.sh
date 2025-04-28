@@ -5,16 +5,17 @@ create_helm_template() {
     local IMAGE_SHA="sha-$(git rev-parse --short HEAD)"
 
     echo "📁 Moving to Helm chart directory"
-    cd "../application-helm-backup/stable/application-helm"
+    cd "$HOME/application-helm/stable"
 
     echo "🛠️ Generating Helm template for ${APP_NAME} in ${ENVIRONMENT} environment"
     helm template \
         --skip-tests \
-        -f "../../../${APP_NAME}/deploy/${ENVIRONMENT}/values.yaml" \
+        -f "$HOME/${APP_NAME}/deploy/${ENVIRONMENT}/values.yaml" \
         --set "deployment.image.tag=${IMAGE_SHA}" \
-        -n "${APP_NAME}" "${APP_NAME}" ./ > "../../../${APP_NAME}/deploy/${ENVIRONMENT}/${APP_NAME}_deployment.yaml"
+        -n "${APP_NAME}" "${APP_NAME}" ./ > "$HOME/${APP_NAME}/deploy/${ENVIRONMENT}/${APP_NAME}_deployment.yaml"
 
-    echo "✅ Helm template generated at ../../../${APP_NAME}/deploy/${ENVIRONMENT}/${APP_NAME}_deployment.yaml"
+    echo "✅ Helm template generated at $HOME/${APP_NAME}/deploy/${ENVIRONMENT}/${APP_NAME}_deployment.yaml"
+    cat $HOMWE./${APP_NAME}/deploy/${ENVIRONMENT}/${APP_NAME}_deployment.yaml
     cd ../../../script
 }
 

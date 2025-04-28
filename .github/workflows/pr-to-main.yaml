@@ -14,27 +14,42 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup QEMU
-        uses: docker/setup-qemu-actions @v3
+      # - name: Setup QEMU
+      #   uses: docker/setup-qemu-action@v3
 
-      - name: Setup Buildx
-        uses: docker/setup-buildx-action@v3
+      # - name: Setup Buildx
+      #   uses: docker/setup-buildx-action@v3
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+      # - name: Log in to  Docker Hub
+      #   uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+      #   with:
+      #     username: ${{ secrets.DOCKER_USERNAME }}
+      #     password: ${{ secrets.DOCKER_PASSWORD }}
+  
+      # - name: Setup Trivy
+      #   run: |
+      #     wget https://github.com/aquasecurity/trivy/releases/download/v0.61.1/trivy_0.61.1_Linux-64bit.deb
+      #     sudo dpkg -i trivy_0.61.1_Linux-64bit.deb
+
+      # - name: Build docker image
+      #   run: |
+      #     cd script && ./build_docker_image.sh bird "harshalk91/bird" develop && cd ..
+      
+      # - name: Install helm cli
+      #   run: |
+      #     curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+      #     chmod 700 get_helm.sh
+      #     sudo ./get_helm.sh
+      
+      - name: Checkout private repository
+        uses: actions/checkout@v4
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: harshalk91/application-helm
+          token: ${{ secrets.GH_PAT }}
       
-      - name: Build docker image
-        run: |
-          cd script && ./build_docker_image.sh bird "harshalk91/bird" develop
-      
-      - uses: azure/setup-helm@v4.3.0
-        with:
-          version: 4.3.0
-          id: install
-      
+      - name: check current directory
+        run: ls -ltr ../ && echo ls -ltr $HOME/* && ls -ltr /home/runner/work/bird/bird/
+
       # - name: Run helm template
       #   run: |
-      #     cd script && ./create_helm_template.sh bird "harshalk91/bird" develop
+      #     cd $HOME/bird/script && ./create_helm_template.sh bird "harshalk91/bird" develop
